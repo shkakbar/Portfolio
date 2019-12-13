@@ -1,3 +1,9 @@
+# Airbnb Rental Listings Dataset Mining
+
+## An Exploratory Analysis of Airbnb’s Data to understand the rental landscape in Stockholm City
+
+In the analysis, we aim to understand Airbnb rental landscape of Stockholm, Sweden. 
+
 Table of contents
 
 * Installation
