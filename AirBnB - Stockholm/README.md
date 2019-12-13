@@ -18,19 +18,19 @@ Python Libraries used are as follows>
 - Matplotlib
 - Seaborn
 - sklearn
-- - Linear model
-- - Model selection
-- - Metrics
+ -- Linear model
+ -- Model selection
+ -- Metrics
 
 
 File descriptions
 
 Within the download you'll find the following directories and files.
 
-Portfolio / AirBnB - Stockholm/
-├── AirBNB - Sweden.ipynb
-├── listings.csv
-└── README.MD
+Portfolio / AirBnB - Stockholm/ 
+├── AirBNB - Sweden.ipynb 
+├── listings.csv 
+└── README.MD 
 
 AirBNB - Sweden.ipynb ==> Notebook to investigate trends of bookings on Airbnb Stockholm, Sweden
 listings.csv ==> Raw data downloaded from AirBnB site.
