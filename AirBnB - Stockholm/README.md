@@ -47,5 +47,6 @@ Creator
 Akbarali Shaikh
 
 https://github.com/shkakbar
+https://medium.com/@sk_akbar/airbnb-rental-listings-dataset-mining-30bfaa1c0591
 
 Thanks to Udacity and AirBnB
