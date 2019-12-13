@@ -1,14 +1,51 @@
-# Portfolio
+# Airbnb Rental Listings Dataset Mining
+
+## An Exploratory Analysis of Airbnb’s Data to understand the rental landscape in Stockholm City
+
+In the analysis, we aim to understand Airbnb rental landscape of Stockholm, Sweden. 
+
+Table of contents
+
+* Installation
+* Project motivation
+* File descriptions
+* Creator
+* Thanks
+
+------------------------------------------------------------------------------------------------------------------
+* Installation
+
+In order to be able to execute your own python statements it should be noted that scripts are only tested on anaconda distribution 4.5.11 in combination with python 3.6. The scripts don't require additional python libraries.
+
+Python Libraries used are as follows>
+- Pandas
+- Numpy
+- Matplotlib
+- Seaborn
+- sklearn (Linear model, Model selection, Train Test Split, Classification Report, Confusion Matrix and Metrics)
+
+Motivation
+
+As part of Udacity Nano Data Science program, working on a portfolio project
 
 
-Welcome to my data science repository containing portfolio of data science projects completed by me for academic, self learning, and hobby purposes. Presented in the form of iPython Notebooks, and R markdown files (published at RPubs).
+File descriptions
 
-The R portfolio is located http://rpubs.com/sk_akbar and python portfolio is located https://github.com/shkakbar/Portfolio
+Within the download you'll find the following directories and files.
 
-Note: Data used in the projects also has a data in a same directory is for learning and demonstration purposes only.
+Portfolio / AirBnB - Stockholm/ 
+├── AirBNB - Sweden.ipynb 
+├── listings.csv 
+└── README.MD 
 
-## Contents
+AirBNB - Sweden.ipynb ==> Notebook to investigate trends of bookings on Airbnb Stockholm, Sweden
+listings.csv ==> Raw data downloaded from AirBnB site.
 
-Data Analysis and Visualisation
-* Python
-  * AirBNB: Analysis of AirBNB rental in Sweden (Stockholm).
+
+Creator
+
+Akbarali Shaikh
+
+https://github.com/shkakbar
+
+Thanks to Udacity and AirBnB
