@@ -17,10 +17,7 @@ Python Libraries used are as follows>
 - Numpy
 - Matplotlib
 - Seaborn
-- sklearn
- -- Linear model
- -- Model selection
- -- Metrics
+- sklearn (Linear model, Model selection, Train Test Split, Classification Report, Confusion Matrix and Metrics)
 
 
 File descriptions
