@@ -1,7 +1,7 @@
 # Disaster Response Web App
 
 ## Installation
-The code contained in this repository was written in HTML and Python 3, and requires the following Python packages: json, plotly, pandas, nltk, flask, sklearn, sqlalchemy, sys, numpy, re, pickle, warnings.
+The code contained in this repository was written in HTML and Python 3, and requires the following Python packages: json, sys, sqlite3, re, pickle, nltk, warnings, sklearn.
 
 ## Project Overview
 This repository contains code for a web app which an emergency worker could use during a disaster event (e.g. an earthquake or hurricane), to classify a disaster message into several categories, in order that the message can be directed to the appropriate aid agencies. 
@@ -20,12 +20,12 @@ The app uses a ML model to categorize any new messages received, and the reposit
 ### ***Run process_data.py***
 1. Save the data folder in the current working directory and process_data.py in the data folder.
 2. From the current working directory, run the following command:
-`python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
+`python process_data.py data/messages.csv data/categories.csv data/DisasterResponse.db`
 
 ### ***Run train_classifier.py***
 1. In the current working directory, create a folder called 'models' and save train_classifier.py in this.
 2. From the current working directory, run the following command:
-`python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+`python train_classifier.py data/DisasterResponse.db classifier.pkl`
 
 ### ***Run the web app***
 1. Save the app folder in the current working directory.
@@ -36,10 +36,10 @@ The app uses a ML model to categorize any new messages received, and the reposit
 ## Screenshots
 
 ***Screenshot 1: App Front Page***
-![Screenshot 1](https://github.com/gkhayes/disaster_response_app/blob/master/Screenshot1.JPG)
+![Screenshot 1](<img src=https://github.com/shkakbar/Portfolio/tree/master/Twitter%20Analysis/Images/Screenshot1.JPG/>)
 
 ***Screenshot 2: App Results Page***
-![Screenshot 2](https://github.com/gkhayes/disaster_response_app/blob/master/Screenshot2.JPG)
+![Screenshot 2](<img src=https://github.com/shkakbar/Portfolio/tree/master/Twitter%20Analysis/Images/Screenshot2.JPG/>)
 
 ## Warning
 The datasets included in this repository are very unbalanced, with very few positive examples for several message categories. In some cases, the proportion of positive examples is less than 5%, or even less than 1%. In such cases, even though the classifier accuracy is very high (since it tends to predict that the message does not fall into these categories), the classifier recall (i.e. the proportion of positive examples that were correctly labelled) tends to be very low. As a result, care should be taken if relying on the results of this app for decision making purposes.
