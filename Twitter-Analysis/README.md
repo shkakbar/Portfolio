@@ -33,14 +33,6 @@ The app uses a ML model to categorize any new messages received, and the reposit
     `python run.py`
 3. Go to http://0.0.0.0:3001/
 
-## Screenshots
-
-***Screenshot 1: App Front Page***
-![Screenshot 1](<img src=https://github.com/shkakbar/Portfolio/tree/master/Twitter%20Analysis/Images/Screenshot1.JPG/>)
-
-***Screenshot 2: App Results Page***
-![Screenshot 2](<img src=https://github.com/shkakbar/Portfolio/tree/master/Twitter%20Analysis/Images/Screenshot2.JPG/>)
-
 ## Warning
 The datasets included in this repository are very unbalanced, with very few positive examples for several message categories. In some cases, the proportion of positive examples is less than 5%, or even less than 1%. In such cases, even though the classifier accuracy is very high (since it tends to predict that the message does not fall into these categories), the classifier recall (i.e. the proportion of positive examples that were correctly labelled) tends to be very low. As a result, care should be taken if relying on the results of this app for decision making purposes.
 
