@@ -36,7 +36,7 @@ The app uses a ML model to categorize any new messages received, and the reposit
 ## Screenshots
 
 ***Screenshot 1: App Front Page***
-![Screenshot 1](https://github.com/shkakbar/Portfolio/tree/master/Twitter%20Analysis/Images/Screenshot1.JPG)
+![Screenshot 1](<img src=https://github.com/shkakbar/Portfolio/tree/master/Twitter%20Analysis/Images/Screenshot1.JPG/>)
 
 ***Screenshot 2: App Results Page***
 ![Screenshot 2](<img src=https://github.com/shkakbar/Portfolio/tree/master/Twitter%20Analysis/Images/Screenshot2.JPG/>)
