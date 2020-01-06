@@ -8,6 +8,37 @@ This repository contains code for a web app which an emergency worker could use 
 
 The app uses a ML model to categorize any new messages received, and the repository also contains the code used to train the model and to prepare any new datasets for model training purposes.
 
+## Project Components
+There are three components of this project:
+
+### ETL Pipeline
+
+File data/process_data.py contains data cleaning pipeline that:
+
+* **Loads the messages and categories dataset**
+* **Merges the two datasets**
+* **Cleans the data**
+* **Stores it in a SQLite database**
+
+### ML Pipeline
+
+File models/train_classifier.py contains machine learning pipeline that:
+
+* **Loads data from the SQLite database**
+* **Splits the data into training and testing sets**
+* **Builds a text processing and machine learning pipeline**
+* **Trains and tunes a model using GridSearchCV**
+* **Outputs result on the test set**
+* **Exports the final model as a pickle file**
+
+### Flask Web App
+
+Running the command from app directory will start the web app where users can enter their query, i.e., a request message sent during a natural disaster, e.g. "Please, Help! it flooded, we need tents and water.".
+
+### Running
+
+There are three steps to get up and runnning with the web app if you want to start from ETL process.
+
 ## File Descriptions
 * **process_data.py**: This code takes as its input csv files containing message data and message categories (labels), and creates an SQLite database containing a merged and cleaned version of this data.
 * **train_classifier.py**: This code takes the SQLite database produced by process_data.py as an input and uses the data contained within it to train and tune a ML model for categorizing messages. The output is a pickle file containing the fitted model. Test evaluation metrics are also printed as part of the training process.
@@ -16,7 +47,7 @@ The app uses a ML model to categorize any new messages received, and the reposit
 * **data**: This folder contains sample messages and categories datasets in csv format.
 * **app**: This folder contains all of the files necessary to run and render the web app.
 
-## Running Instructions
+## Execution Instructions
 ### ***Run process_data.py***
 1. Save the data folder in the current working directory and process_data.py in the data folder.
 2. From the current working directory, run the following command:
