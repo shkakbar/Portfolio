@@ -24,12 +24,12 @@ File data/process_data.py contains data cleaning pipeline that:
 
 File models/train_classifier.py contains machine learning pipeline that:
 
-* **Loads data from the SQLite database**
-* **Splits the data into training and testing sets**
-* **Builds a text processing and machine learning pipeline**
-* **Trains and tunes a model using GridSearchCV**
-* **Outputs result on the test set**
-* **Exports the final model as a pickle file**
+* Loads data from the SQLite database
+* Splits the data into training and testing sets
+* Builds a text processing and machine learning pipeline
+* Trains and tunes a model using GridSearchCV
+* Outputs result on the test set
+* Exports the final model as a pickle file
 
 ### Flask Web App
 
