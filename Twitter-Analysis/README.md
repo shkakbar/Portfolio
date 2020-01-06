@@ -15,10 +15,10 @@ There are three components of this project:
 
 File data/process_data.py contains data cleaning pipeline that:
 
-* **Loads the messages and categories dataset**
-* **Merges the two datasets**
-* **Cleans the data**
-* **Stores it in a SQLite database**
+* Loads the messages and categories dataset
+* Merges the two datasets
+* Cleans the data
+* Stores it in a SQLite database
 
 ### ML Pipeline
 
