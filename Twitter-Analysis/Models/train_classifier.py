@@ -1,218 +1,128 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[79]:
-
-
-# Import libraries
-import sys, sqlite3, re, pickle, nltk, warnings
-
-import pandas as pd
-import numpy as np
-
+# imports
 from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-from nltk.stem.porter import PorterStemmer
-
-from sklearn.pipeline import Pipeline
+import numpy as np
+import pandas as pd
+from pprint import pprint
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, make_scorer
-from sklearn.model_selection import GridSearchCV
-from sklearn.decomposition import TruncatedSVD
+from sklearn.pipeline import Pipeline
+from sklearn.svm import LinearSVC
+from sqlalchemy import create_engine
 
-nltk.download('punkt', 'stopwords')
-
-warnings.simplefilter('ignore')
+import pickle, re, sys, time, warnings, sqlite3
 
 
-# In[94]:
+warnings.filterwarnings('ignore')
 
 
-def load_data(database_name):
-    """Load and merge messages and categories datasets
-    
-    Args:
-    database_filename: string. Filename for SQLite database containing cleaned message data.
-       
-    Returns:
-    X: dataframe. Dataframe containing features dataset.
-    Y: dataframe. Dataframe containing labels dataset.
-    category_names: list of strings. List containing category names.
+def load_data(database_filepath):
     """
-    # Load data from database
-    #conn = sqlite3.connect("Data/cleanTwitterDB.db")
-    conn = sqlite3.connect(database_name)
+    Loads data from SQL Database
+    Args:
+    database_filepath: SQL database file
+    Returns:
+    X pandas_dataframe: Features dataframe
+    Y pandas_dataframe: Target dataframe
+    category_names list: Target labels 
+    """
+    conn = sqlite3.connect(database_filepath)
+    print(database_filepath)
     df = pd.read_sql_query("SELECT * FROM messages", conn)
+    X,Y = df['message'], df.iloc[:,4:]
 
-    # Create X and Y datasets
-    X = df["message"]
-    Y = df.drop(['message', 'genre', 'id', 'original'], axis = 1)
-    
-    # Create list containing all category names
-    category_names = list(Y.columns.values)
-    
-    return X, Y, category_names
+    # Y['related'] contains three distinct values
+    # mapping extra values to `1`
+    Y['related']=Y['related'].map(lambda x: 1 if x == 2 else x)
+    category_names = Y.columns
 
-
-# In[81]:
-
+    return X, Y, category_names 
 
 def tokenize(text):
-    """Normalize, tokenize and stem text string
-    
-    Args:
-    text: string. String containing message for processing
-       
-    Returns:
-    stemmed: list of strings. List containing normalized and stemmed word tokens
     """
-    # Convert text to lowercase and remove punctuation
+    Tokenizes text data
+    Args:
+    text str: Messages as text data
+    Returns:
+    words list: Processed text after normalizing, tokenizing and lemmatizing
+    """
+    # Normalize text
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())
     
-    # Tokenize words
-    tokens = word_tokenize(text)
-
-    # lemmatizer words
-    lemmatizer = WordNetLemmatizer()
+    # tokenize text
+    words = word_tokenize(text)
     
-    clean_tokens = []
-    for tok in tokens:
-        clean_tok = lemmatizer.lemmatize(tok).lower().strip()
-        clean_tokens.append(clean_tok)
-    return clean_tokens
-
-
-# In[82]:
-
-
-def performance_metric(model, X_test, y_test):
-    '''
-    Function to generate classification report on the model
-    Input: Model, test set ie X_test & y_test
-    Output: Prints the Classification report
-    '''
-    y_pred = model.predict(X_test)
-    for i, col in enumerate(y_test):
-        return classification_report(y_test[col], y_pred[:, i])
-
-
-# In[83]:
-
-
-def build_model(X_train, y_train):
-    """Build a machine learning pipeline
+    # remove stop words
+    stopwords_ = stopwords.words("english")
+    words = [word for word in words if word not in stopwords_]
     
-    Args:
-    None
-       
-    Returns:
-    cv: gridsearchcv object. Gridsearchcv object that transforms the data, creates the 
-    model object and finds the optimal model parameters.
+    # extract root form of words
+    words = [WordNetLemmatizer().lemmatize(word, pos='v') for word in words]
+
+    return words
+
+
+def build_model():
     """
-    # Create pipeline
-    pipeline = Pipeline([
-        ('vect', CountVectorizer()),
-        ('best', TruncatedSVD()),
-        ('tfidf', TfidfTransformer()),
-        ('clf', MultiOutputClassifier(AdaBoostClassifier()))
-    ])
+    Build model with GridSearchCV
     
-    pipeline.fit(X_train, y_train)
-    
-    # Create parameters dictionary, Param tunning 
-    parameters = { #'vect__ngram_range': ((1, 1), (1, 2)), 
-              #'vect__max_df': (0.5, 1.0), 
-              #'vect__max_features': (None, 5000), 
-              'tfidf__use_idf': (True, False), 
-              'clf__estimator__n_estimators': [50, 100],
-              'clf__estimator__learning_rate': [1,2] }
-    
-    # Create scorer
-    scorer = make_scorer(performance_metric)
-    
-    # Create grid search object
-    #cv = GridSearchCV(pipeline, param_grid = parameters, scoring = scorer, verbose = 10)
-    cv = GridSearchCV(pipeline, param_grid=parameters)
-    cv.fit(X_train, y_train)
-    return cv
-
-
-# In[84]:
-
-
-def get_eval_metrics(actual, predicted, col_names):
-    """Calculate evaluation metrics for ML model
-    
-    Args:
-    actual: array. Array containing actual labels.
-    predicted: array. Array containing predicted labels.
-    col_names: list of strings. List containing names for each of the predicted fields.
-       
     Returns:
-    metrics_df: dataframe. Dataframe containing the accuracy, precision, recall 
-    and f1 score for a given set of actual and predicted labels.
+    Trained model after performing grid search
     """
-    metrics = []
-    
-    # Calculate evaluation metrics for each set of labels
-    for i in range(len(col_names)):
-        accuracy = accuracy_score(actual[:, i], predicted[:, i])
-        precision = precision_score(actual[:, i], predicted[:, i], average='micro')
-        recall = recall_score(actual[:, i], predicted[:, i], average='micro')
-        f1 = f1_score(actual[:, i], predicted[:, i], average='micro')
-        
-        metrics.append([accuracy, precision, recall, f1])
-    
-    # Create dataframe containing metrics
-    metrics = np.array(metrics)
-    metrics_df = pd.DataFrame(data = metrics, index = col_names, columns = ['Accuracy', 'Precision', 'Recall', 'F1'])
-      
-    return metrics_df
+    # model pipeline
+    pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize)),
+                         ('tfidf', TfidfTransformer()),
+                         ('clf', MultiOutputClassifier(
+                            OneVsRestClassifier(LinearSVC())))])
 
+    # hyper-parameter grid
+    parameters = {'vect__ngram_range': ((1, 1), (1, 2)),
+                  'vect__max_df': (0.75, 1.0)
+                  }
 
-# In[85]:
+    # create model
+    model = GridSearchCV(estimator=pipeline,
+            param_grid=parameters,
+            verbose=3,
+            cv=3)
+    return model
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
-    """Returns test accuracy, precision, recall and F1 score for fitted model
-    
-    Args:
-    model: model object. Fitted model object.
-    X_test: dataframe. Dataframe containing test features dataset.
-    Y_test: dataframe. Dataframe containing test labels dataset.
-    category_names: list of strings. List containing category names.
-    
-    Returns:
-    None
     """
-    # Predict labels for test dataset
-    Y_pred = model.predict(X_test)
-    
-    # Calculate and print evaluation metrics
-    eval_metrics = get_eval_metrics(np.array(Y_test), Y_pred, category_names)
-    print(eval_metrics)
+    Shows model's performance on test data
+    Args:
+    model: trained model
+    X_test: Test features
+    Y_test: Test targets
+    category_names: Target labels
+    """
 
+    # predict
+    y_pred = model.predict(X_test)
 
-# In[86]:
+    # print classification report
+    print(classification_report(Y_test.values, y_pred, target_names=category_names))
+
+    # print accuracy score
+    print('Accuracy: {}'.format(np.mean(Y_test.values == y_pred)))
 
 
 def save_model(model, model_filepath):
-    """Pickle fitted model
-    
-    Args:
-    model: model object. Fitted model object.
-    model_filepath: string. Filepath for where fitted model should be saved
-    
-    Returns:
-    None
     """
-    pickle.dump(model.best_estimator_, open(model_filepath, 'wb'))
+    Saves the model to a Python pickle file    
+    Args:
+    model: Trained model
+    model_filepath: Filepath to save the model
+    """
 
-
-# In[92]:
+    # save model to pickle file
+    pickle.dump(model, open(model_filepath, 'wb'))
 
 
 def main():
@@ -221,13 +131,12 @@ def main():
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, Y, category_names = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
-        print(model_filepath)
+        
         print('Building model...')
-        #model = build_model()
-        model = build_model(X_train, Y_train)
+        model = build_model()
         
         print('Training model...')
-        #model.fit(model, X_train, Y_train)
+        model.fit(X_train, Y_train)
         
         print('Evaluating model...')
         evaluate_model(model, X_test, Y_test, category_names)
@@ -238,24 +147,11 @@ def main():
         print('Trained model saved!')
 
     else:
-        print('Please provide the filepath of the disaster messages database '              'as the first argument and the filepath of the pickle file to '              'save the model to as the second argument. \n\nExample: python '              'train_classifier.py Data/cleanTwitterDB.db classifier.pkl')
-
-
-# In[93]:
+        print('Please provide the filepath of the disaster messages database '\
+              'as the first argument and the filepath of the pickle file to '\
+              'save the model to as the second argument. \n\nExample: python '\
+              'train_classifier.py ../data/DisasterResponse.db classifier.pkl')
 
 
 if __name__ == '__main__':
     main()
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-

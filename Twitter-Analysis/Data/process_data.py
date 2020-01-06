@@ -16,115 +16,92 @@
 #     - CSV file containing categories (data/disaster_categories.csv)</br>
 #     - SQLite destination database (data/DisasterResponse.db)</br>
 
-# In[9]:
-
-
+# imports
 import sys, sqlite3
-import numpy as np
 import pandas as pd
+from sqlalchemy import create_engine
 
-
-# In[10]:
-
-
-def load_data(messages_filepath, categories_filepath):
-    """Load and merge messages and categories datasets
-    
-    Args:
-    messages_filepath: string. Filepath for csv file containing messages dataset.
-    categories_filepath: string. Filepath for csv file containing categories dataset.
-       
-    Returns:
-    df: dataframe. Dataframe containing merged content of messages and categories datasets.
+def load_data(messages_file_path, categories_file_path):
     """
+    - Takes inputs as two CSV files
+    - Imports them as pandas dataframe.
+    - Merges them into a single dataframe
+    Args:
+    messages_file_path str: Messages CSV file
+    categories_file_path str: Categories CSV file
+    Returns:
+    merged_df pandas_dataframe: Dataframe obtained from merging the two input\
+    data
+    """
+
+    messages = pd.read_csv(messages_file_path)
+    categories = pd.read_csv(categories_file_path)
     
-    # Load messages dataset
-    messages = pd.read_csv(messages_filepath)
-    
-    # Load categories dataset
-    categories = pd.read_csv(categories_filepath)
-    
-    # Merge datasets
-    df = messages.merge(categories, how = 'left', on = ['id'])
+    df = messages.merge(categories, on='id')
     
     return df
 
-
-# In[11]:
-
-
 def clean_data(df):
-    """Clean dataframe by removing duplicates and converting categories from strings 
-    to binary values.
+    """
+    - Cleans the combined dataframe for use by ML model
     
     Args:
-    df: dataframe. Dataframe containing merged content of messages and categories datasets.
-       
+    df pandas_dataframe: Merged dataframe returned from load_data() function
     Returns:
-    df: dataframe. Dataframe containing cleaned version of input dataframe.
+    df pandas_dataframe: Cleaned data to be used by ML model
     """
-    
-    # Create a dataframe of the 36 individual category columns
-    categories = df['categories'].str.split(';', expand = True)
-    
-    # Select the first row of the categories dataframe
-    row = categories.iloc[0]
 
+    # Split categories into separate category columns
+    categories = df['categories'].str.split(";",\
+                                            expand = True)
+    
+    # select the first row of the categories dataframe
+    row = categories.iloc[0,:].values
+    
     # use this row to extract a list of new column names for categories.
-    # one way is to apply a lambda function that takes everything 
-    # up to the second to last character of each string with slicing
-    category_colnames = row.transform(lambda x: x[:-2]).tolist()
-    
-    # Rename the columns of `categories`
-    categories.columns = category_colnames
-    
-    # Convert  category values to numeric values
+    new_cols = [r[:-2] for r in row]
+
+    # rename the columns of `categories`
+    categories.columns = new_cols
+
+    # Convert category values to just numbers 0 or 1.
     for column in categories:
+
         # set each value to be the last character of the string
-        categories[column] = categories[column].transform(lambda x: x[-1:])
+        categories[column] = categories[column].str[-1]
         
         # convert column from string to numeric
         categories[column] = pd.to_numeric(categories[column])
     
-    # Drop the original categories column from `df`
+    # drop the original categories column from `df`
     df.drop('categories', axis = 1, inplace = True)
-    
-    
-    # Concatenate the original dataframe with the new `categories` dataframe
-    df = pd.concat([df, categories], axis = 1)
-    
-    # Drop duplicates
+
+    # concatenate the original dataframe with the new `categories` dataframe
+    df[categories.columns] = categories
+
+    # drop duplicates
     df.drop_duplicates(inplace = True)
-    
-    # Remove rows with a related value of 2 from the dataset
-    df = df[df['related'] != 2]
-    
+
     return df
 
-
-# In[2]:
-
-
-def save_data(df, database_filename):
-    """Save cleaned data into an SQLite database.
-    
+def save_data(df, database_file_name):
+    """
+    Saves cleaned data to an SQL database
     Args:
-    df: dataframe. Dataframe containing cleaned version of merged message and 
-    categories data.
-    database_filename: string. Filename for output database.
-       
+    df pandas_dataframe: Cleaned data returned from clean_data() function
+    database_file_name str: File path of SQL Database into which the cleaned\
+    data is to be saved
     Returns:
     None
     """
-    #database = 'Data/'+ database_filename
-    database = database_filename
-    print(database)
-    conn = sqlite3.connect(database)
+    
+    #database = database_file_name.split("/")[-1] # extract file name from \
+                                                     # the file path
+    #print(database)
+    
+    #conn = sqlite3.connect(database)
+    conn = sqlite3.connect(database_file_name)
     df.to_sql('messages', conn, index=False, if_exists='replace')
-
-
-# In[16]:
-
 
 def main():
     if len(sys.argv) == 4:
@@ -144,15 +121,16 @@ def main():
         print('Cleaned data saved to database!')
     
     else:
-        print('Please provide the filepaths of the messages and categories '              'datasets as the first and second argument respectively, as '              'well as the filepath of the database to save the cleaned data '              'to as the third argument. \n\nExample: python process_data.py '              'data/messages.csv data/categories.csv '              'data/DisasterResponse.db')
+        print('Please provide the filepaths of the messages and categories '\
+              'datasets as the first and second argument respectively, as '\
+              'well as the filepath of the database to save the cleaned data '\
+              'to as the third argument. \n\nExample: python process_data.py '\
+              'disaster_messages.csv disaster_categories.csv '\
+              'DisasterResponse.db')
 
 
+# run
 if __name__ == '__main__':
     main()
-
-
-# In[ ]:
-
-
 
 
