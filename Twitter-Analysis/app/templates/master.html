@@ -46,7 +46,6 @@
                 </form>
             </div>
         </div>
-
         {% block message %}
         {% endblock %}
     </div>
@@ -65,7 +64,7 @@
 </div>
 
 <script type="text/javascript">
-    const graphs = {{graphJSON | safe}};
+    const graphs = {{figuresJSON | safe}};
     const ids = {{ids | safe}};
     for(let i in graphs) {
         Plotly.plot(ids[i], graphs[i].data, graphs[i].layout);

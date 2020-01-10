@@ -94,12 +94,6 @@ def save_data(df, database_file_name):
     Returns:
     None
     """
-    
-    #database = database_file_name.split("/")[-1] # extract file name from \
-                                                     # the file path
-    #print(database)
-    
-    #conn = sqlite3.connect(database)
     conn = sqlite3.connect(database_file_name)
     df.to_sql('messages', conn, index=False, if_exists='replace')
 

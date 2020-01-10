@@ -1,10 +1,14 @@
 # imports
-from nltk.corpus import stopwords
+
+from nltk import pos_tag
+from nltk.corpus import stopwords, wordnet
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
+
 import numpy as np
 import pandas as pd
 from pprint import pprint
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.metrics import classification_report
@@ -13,7 +17,6 @@ from sklearn.multiclass import OneVsRestClassifier
 from sklearn.multioutput import MultiOutputClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.svm import LinearSVC
-from sqlalchemy import create_engine
 
 import pickle, re, sys, time, warnings, sqlite3
 
@@ -32,7 +35,6 @@ def load_data(database_filepath):
     category_names list: Target labels 
     """
     conn = sqlite3.connect(database_filepath)
-    print(database_filepath)
     df = pd.read_sql_query("SELECT * FROM messages", conn)
     X,Y = df['message'], df.iloc[:,4:]
 
@@ -63,9 +65,9 @@ def tokenize(text):
     
     # extract root form of words
     words = [WordNetLemmatizer().lemmatize(word, pos='v') for word in words]
-
+    
     return words
-
+    
 
 def build_model():
     """
@@ -82,7 +84,7 @@ def build_model():
 
     # hyper-parameter grid
     parameters = {'vect__ngram_range': ((1, 1), (1, 2)),
-                  'vect__max_df': (0.75, 1.0)
+                  'vect__max_df': (0.75, 1.0) 
                   }
 
     # create model
