@@ -8,7 +8,7 @@ This data set contains three files. The first file describes the characteristics
 
 
 ------------------------------------------------------------------------------------------------------------------
-* Problem Statement / Metrics
+## Problem Statement / Metrics
 
 The problem that I chose to solve is to build a model that predicts whether a customer will respond to an offer. My strategy for solving this problem has following steps. 
 First, clean and combine offer portfolio, customer profile, and transaction data. Each row of this combined dataset will describe an offer's attributes, customer demographic data, and whether the offer was successful. 
@@ -16,7 +16,7 @@ Second, apply a different machine learning model and assess different accuracy a
 Third, compare the performance of logistic regression, random forest, and gradient boosting models. 
 And finally, refine the parameters of the model that has the highest accuracy and F1-score.
 
-* Installation
+## Installation
 In order to be able to execute your own python statements it should be noted that scripts are only tested on anaconda distribution 4.5.11 in combination with python 3.7 or above. The scripts don't require additional python libraries.
 Python Libraries used are as follows>
 Progressbar
@@ -27,10 +27,10 @@ Matplotlib
 Seaborn
 sklearn (train_test_split, RandomizedSearchCV, GridSearchCV, MinMaxScaler, accuracy_score, f1_score, fbeta_score, make_scorer, LogisticRegression, GradientBoostingClassifier, RandomForestClassifier)
 
-* Motivation
+## Motivation
 This project is done as part Udacity Data Scientist Nanodegree program - Starbucks Capstone challenge, this is a final project submission of my certification.
 
-* Analysis 
+## Analysis 
 Starbucks, periodically send the offers to users that may be an advertisement, discount or buy one get one free offer this data set is a simulation of customer behavior on the Starbucks rewards mobile application. An important characteristic of this dataset is that not all users receive the same offer. Hence, identifying the right individuals for targeted marketing who will respond positively to an offer
 Machine Learning Model used as part of the project 
 Logistic Regression Model
@@ -44,12 +44,16 @@ Both random forest and gradient boosting models are a combination of multiple de
 Random Forest model was the best model on training dataset hence best fit parameters were refined further to test on 'test dataset', the performance of the model accuracy and F1-score improved as compared with training set and overfitting signs were observed.
 
 
-* File descriptions
+## File descriptions
 Within the download you'll find the following directories and files.
 Portfolio / Capstone Starbuck/ ├── Starbucks_Capstone_notebook.ipynb
 
-* Creator
+## Creator
+
 Akbarali Shaikh
+
 https://github.com/shkakbar
-https://medium.com/p/9e69ae06dc86/edit 
+
+https://medium.com/@sk_akbar/starbucks-capstone-challenge-predicting-marketing-offer-success-9e69ae06dc86
+
 Thanks to Starbucks and Udacity 
