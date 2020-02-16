@@ -1,4 +1,18 @@
-"""Exploratory data analysis functions"""
+"""Exploratory data analysis functions
+
+References:
+----------
+https://stackoverflow.com/questions/38334296/
+    reversing-one-hot-encoding-in-pandas
+
+https://stackoverflow.com/questions/4406389/if-else-in-a-list-comprehension
+
+https://stackoverflow.com/questions/17679089/
+    pandas-dataframe-groupby-two-columns-and-get-counts
+
+https://stackoverflow.com/questions/10373660/
+    converting-a-pandas-groupby-object-to-dataframe
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd

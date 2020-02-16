@@ -1,0 +1,8 @@
+Parameter Distribution {'penalty': ['l1', 'l2'], 'C': [1.0, 0.1, 0.01]}
+Best: 0.697431 using {'penalty': 'l1', 'C': 1.0}
+0.697431 (0.001540) with: {'penalty': 'l1', 'C': 1.0}, std score of 0.001540, score rank of 1,
+0.697240 (0.001720) with: {'penalty': 'l2', 'C': 1.0}, std score of 0.001720, score rank of 2,
+0.696222 (0.001027) with: {'penalty': 'l1', 'C': 0.1}, std score of 0.001027, score rank of 4,
+0.696614 (0.000601) with: {'penalty': 'l2', 'C': 0.1}, std score of 0.000601, score rank of 3,
+0.689706 (0.000959) with: {'penalty': 'l1', 'C': 0.01}, std score of 0.000959, score rank of 6,
+0.694100 (0.001649) with: {'penalty': 'l2', 'C': 0.01}, std score of 0.001649, score rank of 5,

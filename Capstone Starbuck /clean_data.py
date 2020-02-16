@@ -28,6 +28,52 @@ data files:
     * time (int) - time in hours. The data begins at time t=0
     * value - (dict of strings) - either an offer id or transaction amount
               depending on the record
+
+References:
+----------
+https://github.com/jtleek/datasharing - Defines what an analytic dataset is
+
+https://stackoverflow.com/questions/41968732/
+    set-order-of-columns-in-pandas-dataframe
+
+https://stackoverflow.com/questions/40245507/
+    python-pandas-selecting-rows-whose-column-value-is-null-none-nan
+
+https://scikit-learn.org/stable/modules/generated/
+    sklearn.preprocessing.MultiLabelBinarizer.html
+    #sklearn.preprocessing.MultiLabelBinarizer
+
+https://stackoverflow.com/questions/26454649/
+    python-round-up-to-the-nearest-ten
+
+https://stackoverflow.com/questions/44596077/
+    datetime-strptime-in-python
+
+https://stackoverflow.com/questions/4953272/
+    how-to-match-exact-multiple-strings-in-python
+
+https://stackoverflow.com/questions/402504/
+    how-to-determine-a-python-variables-type
+
+https://stackoverflow.com/questions/49728421/
+    pandas-dataframe-settingwithcopywarning-a-value-is-trying-to-be-
+    set-on-a-copy
+
+https://stackoverflow.com/questions/43515877/
+    should-binary-features-be-one-hot-encoded
+
+https://www.shanelynn.ie/select-pandas-dataframe-rows-and-
+    columns-using-iloc-loc-and-ix/
+
+https://stackoverflow.com/questions/38987/how-to-merge-two-
+    dictionaries-in-a-single-expression
+
+https://stackoverflow.com/questions/3002085/python-to-print-out-
+    status-bar-and-percentage
+
+https://progressbar-2.readthedocs.io/en/latest/progressbar.bar.html
+
+https://progressbar-2.readthedocs.io/en/latest/index.html#introduction
 """
 
 from datetime import datetime
@@ -101,7 +147,7 @@ def clean_portfolio(data_dir="./data"):
                        'reward']
 
     # One hot encode the 'offertype' column
-    offertype_df = pd.get_dummies(portfolio['offertype'], drop_first=True)
+    offertype_df = pd.get_dummies(portfolio['offertype'])
 
     column_ordering.extend(offertype_df.columns.values)
 
