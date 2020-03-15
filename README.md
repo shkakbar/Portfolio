@@ -34,3 +34,10 @@ Data Analysis and Visualisation
      - Matplotlib
      - Seaborn
      - sklearn (Linear model, Model selection, Train Test Split, Classification Report, Confusion Matrix and Metrics)
+
+  * Company has limited budget plan, with the budget business would like to understand which channel will result in better RoI. Libraries used are as follows:
+     - Pandas
+     - Numpy
+     - Matplotlib
+     - Seaborn
+     - sklearn (Linear model, Model selection, Train Test Split, Classification Report, Confusion Matrix and Metrics)
