@@ -12,3 +12,6 @@ Note: Data used in the projects also has a data in a same directory is for learn
 Data Analysis and Visualisation
 * Python
   * AirBNB: Analysis of AirBNB rental in Sweden (Stockholm).
+  * Twitter - Disaster Response Web App: Applciation to respond to crticial event at the time of emergency.
+  
+  
