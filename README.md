@@ -12,6 +12,13 @@ Note: Data used in the projects also has a data in a same directory is for learn
 Data Analysis and Visualisation
 * Python
   * AirBNB: Analysis of AirBNB rental in Sweden (Stockholm).
+   Python Libraries used are as follows>
+     - Pandas
+     - Numpy
+     - Matplotlib
+     - Seaborn
+     - sklearn (Linear model, Model selection, Train Test Split, Classification Report, Confusion Matrix and Metrics)
+
   * Twitter - Disaster Response Web App: Applciation to respond to crticial event at the time of emergency.
   
   
