@@ -11,7 +11,7 @@ Note: Data used in the projects also has a data in a same directory is for learn
 
 Data Analysis and Visualisation
 * Python
-  * AirBNB: Analysis of AirBNB rental in Sweden (Stockholm)./n
+  * AirBNB: Analysis of AirBNB rental in Sweden (Stockholm).\n
    Python Libraries used are as follows>
      - Pandas
      - Numpy
